@@ -1051,8 +1051,19 @@
         }
 
         .success-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+            border-radius: 50%;
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .success-icon svg {
+            stroke: #8b5cf6;
         }
 
         .success-title {
@@ -1731,13 +1742,18 @@
                     </div>
 
                     <button type="submit" class="form-submit" id="submitBtn">
-                        Join Waitlist
+                        Send
                     </button>
                 </form>
             </div>
 
             <div id="successContainer" class="success-message">
-                <div class="success-icon">🎉</div>
+                <div class="success-icon">
+                    <svg viewBox="0 0 24 24" width="64" height="64" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9 12l2 2 4-4"></path>
+                    </svg>
+                </div>
                 <h3 class="success-title">You're on the list!</h3>
                 <p class="success-text">Thanks for joining! We'll send you an email when XMPT launches in Q1 2026.</p>
             </div>
@@ -1804,12 +1820,12 @@
                     <li>Correction or deletion of your information</li>
                     <li>Removal from our waitlist</li>
                 </ul>
-                <p>Contact us at <a href="mailto:support@xmpt.io">support@xmpt.io</a> for any requests.</p>
+                <p>Contact us at <a href="/cdn-cgi/l/email-protection#ee9d9b9e9e819c9aae96839e9ac08781"><span class="__cf_email__" data-cfemail="33404643435c4147734b5e43471d5a5c">[email&#160;protected]</span></a> for any requests.</p>
 
                 <h2>7. Changes to This Policy</h2>
                 <p>We may update this policy as XMPT evolves. Changes will be posted on this page with an updated date.</p>
 
-                <p>If you have any questions, please contact <a href="mailto:support@xmpt.io">support@xmpt.io</a></p>
+                <p>If you have any questions, please contact <a href="/cdn-cgi/l/email-protection#86f5f3f6f6e9f4f2c6feebf6f2a8efe9"><span class="__cf_email__" data-cfemail="f784828787988583b78f9a8783d99e98">[email&#160;protected]</span></a></p>
             </div>
         </div>
     </div>
@@ -1884,12 +1900,12 @@
                 <p>We may modify these Terms at any time. Updated terms will be posted with a new date.</p>
 
                 <h2>8. Contact</h2>
-                <p>For any questions regarding these Terms, contact us at <a href="mailto:support@xmpt.io">support@xmpt.io</a></p>
+                <p>For any questions regarding these Terms, contact us at <a href="/cdn-cgi/l/email-protection#33404643435c4147734b5e43471d5a5c"><span class="__cf_email__" data-cfemail="aedddbdedec1dcdaeed6c3deda80c7c1">[email&#160;protected]</span></a></p>
             </div>
         </div>
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         function openPrivacy(event) {
             event.preventDefault();
             document.getElementById('privacyOverlay').classList.add('active');
@@ -1912,30 +1928,43 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Close privacy overlay when clicking outside
-        document.getElementById('privacyOverlay').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closePrivacy();
-            }
-        });
-
-        // Close terms overlay when clicking outside
-        document.getElementById('termsOverlay').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeTerms();
-            }
-        });
-
-        // Close overlays with Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                if (document.getElementById('privacyOverlay').classList.contains('active')) {
+        // Initialize event listeners when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Close privacy overlay when clicking outside
+            document.getElementById('privacyOverlay').addEventListener('click', function(e) {
+                if (e.target === this) {
                     closePrivacy();
                 }
-                if (document.getElementById('termsOverlay').classList.contains('active')) {
+            });
+
+            // Close terms overlay when clicking outside
+            document.getElementById('termsOverlay').addEventListener('click', function(e) {
+                if (e.target === this) {
                     closeTerms();
                 }
-            }
+            });
+
+            // Close modal when clicking outside
+            document.getElementById('waitlistModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+
+            // Close overlays with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (document.getElementById('privacyOverlay').classList.contains('active')) {
+                        closePrivacy();
+                    }
+                    if (document.getElementById('termsOverlay').classList.contains('active')) {
+                        closeTerms();
+                    }
+                    if (document.getElementById('waitlistModal').classList.contains('active')) {
+                        closeModal();
+                    }
+                }
+            });
         });
 
         function openModal(event, pricingTier = null) {
@@ -1985,7 +2014,7 @@
             
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Joining...';
+            submitBtn.textContent = 'Sending...';
 
             const form = document.getElementById('waitlistForm');
             const pricingTier = form.dataset.pricingTier || 'General Interest';
@@ -2034,7 +2063,7 @@
                 console.error('Error submitting form:', error);
                 alert('Sorry, there was an error: ' + error.message + '. Please try again.');
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Join Waitlist';
+                submitBtn.textContent = 'Send';
             }
         }
         // Parallax effect removed
@@ -2092,18 +2121,4 @@
                 if (!lastTouched) return;
                 if (!lastTouched.contains(e.target)) {
                     lastTouched.classList.remove('is-hover');
-                    lastTouched = null;
-                }
-            }
-
-            cards.forEach(c => {
-                c.addEventListener('touchstart', onTouchStart, {passive: true});
-                c.addEventListener('focusin', () => c.classList.add('is-hover'));
-                c.addEventListener('focusout', () => c.classList.remove('is-hover'));
-            });
-
-            document.addEventListener('touchstart', onDocTouch, {passive: true});
-        });
-    </script>
-</body>
-</html>
+       
